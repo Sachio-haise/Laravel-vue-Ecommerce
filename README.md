@@ -5,6 +5,7 @@
 -   php artisan key:generate
 -   php artisan migrate
 
+
 ## dataBase_seeding
 
 -   php artisan db:seed --class=testEnvSeeder

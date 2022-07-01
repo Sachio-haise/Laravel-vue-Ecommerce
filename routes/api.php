@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\NovelController;
+use App\Http\Controllers\API\ChapterController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +36,16 @@ Route::middleware(['auth:api','scope:admin'])->group(function(){
         return User::all();
      });
 });
+
+//novel
+Route::controller(NovelController::class)->group(function(){
+     Route::get('/novels','index');
+});
+
+//chapter
+Route::controller(ChapterController::class)->group(function(){
+     Route::get('/chapters','index');
+});
+
+//category
+Route::get('/categories',[CategoryController::class, 'index']);
