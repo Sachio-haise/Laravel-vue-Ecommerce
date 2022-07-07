@@ -40,12 +40,26 @@ Route::middleware(['auth:api','scope:admin'])->group(function(){
 //novel
 Route::controller(NovelController::class)->group(function(){
      Route::get('/novels','index');
+     Route::get('/novels/{novel}','getNovel');
+     Route::post('/novels/create','create');
+     Route::put('/novels/{novel}/update','update');
+     Route::delete('/novels/{novel}/delete','delete');
 });
 
 //chapter
 Route::controller(ChapterController::class)->group(function(){
      Route::get('/chapters','index');
+     Route::get('/chapters/{chapter}','getChapter');
+     Route::post('/chapters/create','create');
+     Route::put('/chapters/{chapter}/update','update');
+     Route::delete('/chapters/{chapter}/delete','delete');
 });
 
 //category
-Route::get('/categories',[CategoryController::class, 'index']);
+Route::controller(CategoryController::class)->group(function(){
+    Route::get('/categories','index');
+    Route::get('/categories/{category}','getCategory');
+    Route::post('/categories/create','create');
+    Route::put('/categories/{category}/update','update');
+    Route::delete('/categories/{category}/delete','delete');
+});
