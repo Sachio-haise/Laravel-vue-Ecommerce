@@ -17,6 +17,7 @@ class CreateChaptersTable extends Migration
             $table->id();
             $table->bigInteger('novel_id');
             $table->string('title');
+            $table->string('slug');
             $table->longText('paragraph');
             $table->timestamps();
         });

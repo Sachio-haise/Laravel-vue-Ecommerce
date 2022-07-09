@@ -14,10 +14,8 @@ class CreateCategoryNovelTable extends Migration
     public function up()
     {
         Schema::create('category_novel', function (Blueprint $table) {
-            $table->id();
             $table->bigInteger('category_id');
             $table->bigInteger('novel_id');
-            $table->timestamps();
         });
     }
 
