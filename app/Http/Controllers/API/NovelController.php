@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chapter;
 use App\Models\Novel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +16,7 @@ class NovelController extends Controller
     }
 
     public function getNovel(Novel $novel){
-        return $novel::with(['chapters','categories'])->get();
+        return $novel->where('id',$novel->id)->with(['chapters','categories'])->get();
     }
 
     public function create(Request $request){
@@ -35,7 +36,7 @@ class NovelController extends Controller
         ]);
         foreach(json_decode($request->categories) as $category){
             $novel->categories()->attach(
-                ['category_id' => $category,'novel_id' => $novel->id]
+                ['category_id' => $category]
             );
         }
         return response()->json(['data'=>$request->title.' created successfully!','success'=>true]);
@@ -56,9 +57,10 @@ class NovelController extends Controller
             'slug' => Str::slug($request->title),
             'author' => $request->author
         ]);
+        $novel->categories()->wherePivot('novel_id','=',$novel->id)->detach();
         foreach(json_decode($request->categories) as $category){
             $novel->categories()->attach(
-                ['category_id' => $category,'novel_id' => $novel->id]
+                ['category_id' => $category]
             );
         }
         return response()->json(['data'=>$request->title.' updated successfully!','success'=>true]);
@@ -66,6 +68,8 @@ class NovelController extends Controller
 
     public function delete(Novel $novel){
         $novel->delete();
+        $novel->categories()->wherePivot('novel_id','=',$novel->id)->detach();
+        Chapter::where('novel_id',$novel->id)->delete();
         return response()->json(['data'=>'dleted successfully!','success'=>true]);
     }
 }

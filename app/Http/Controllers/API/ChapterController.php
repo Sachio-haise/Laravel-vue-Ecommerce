@@ -15,13 +15,13 @@ class ChapterController extends Controller
     }
 
     public function getChapter(Chapter $chapter){
-        return $chapter;
+        return $chapter->where('id',$chapter->id)->with('novel')->get();
     }
 
     public function create(Request $request){
         $validator = Validator::make($request->all(),[
             'novel_id' => 'required',
-            'title' => 'required|min:10|max:50',
+            'title' => 'required|min:10|max:100',
             'paragraph' => 'required|min:50',
         ]);
 
